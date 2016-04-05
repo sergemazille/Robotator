@@ -1,0 +1,16 @@
+{
+  "name": "jxcore",
+  "version": "1.0.0",
+  "description": "Mobile App Server",
+  "main": "app.js",
+  "dependencies": {
+    "json-nice": "^1.0.1",
+    "polo": "^0.8.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Serge Mazille",
+  "license": "MIT"
+}

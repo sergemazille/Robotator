@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <!-- Partials -->
+    @@if (app === 'appWeb') {
+        @@include('partials/appWebHead.html')
+    }
+    @@if (app === 'appMobile') {
+        @@include('partials/appMobileHead.html')
+    }
+    <!-- end Partials -->
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <title>Robotator</title>
+</head>
+<body>
+
+<div id="interface">
+
+    <div id="left-group">
+        <div id="general">
+            @@if (app === 'appMobile') {
+                @@include('partials/appMobilePowerButton.html')
+            }
+            <img class="config" id="config" data-image="config" src="img/config.png">
+        </div>
+
+        <div id="speed">
+            <img id="turbo" data-image="turbo" src="img/turbo.png">
+        </div>
+
+        <div id="marche">
+            <img class="motor" id="1" data-image="avance" src="img/avance.png">
+            <img class="motor" id="2" data-image="recule" src="img/recule.png">
+        </div>
+    </div>
+
+    <div id="right-group">
+        <div id="audio">
+            <img class="audio led" id="vert" data-image="audio-vert" src="img/audio-vert.png">
+            <img class="audio led" id="rouge" data-image="audio-rouge" src="img/audio-rouge.png">
+            <img class="audio led" id="jaune" data-image="audio-jaune" src="img/audio-jaune.png">
+        </div>
+
+        <div id="headlights">
+            <img class="headlights" data-image="headlights" src="img/headlights.png">
+        </div>
+
+        <div id="direction">
+            <div id="spin">
+                <img class="motor" id="4" data-image="spin-gauche" src="img/spin-gauche.png">
+                <img class="motor" id="3" data-image="spin-droite" src="img/spin-droite.png">
+            </div>
+
+            <div id="tourne">
+                <img class="motor tourne" id="6" data-image="gauche" src="img/gauche.png">
+                <img class="motor tourne" id="5" data-image="droite" src="img/droite.png">
+            </div>
+        </div>
+    </div>
+</div>
+@@if (test == true) {
+@@include('partials/qUnitTestsDivs.html')
+}
+@@if (app == 'appMobile') {
+@@include('partials/cordovaScriptTag.html')
+}
+<!-- inject:js -->
+<!-- endinject -->
+</body>
+</html>

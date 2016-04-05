@@ -1,0 +1,10 @@
+.idea
+node_modules
+*.bat
+
+dev/resources/application/audio/*mp3
+dev/css/vendor/*.css
+dev/js/vendor/*.js
+
+AppMobile/*
+AppWeb/*

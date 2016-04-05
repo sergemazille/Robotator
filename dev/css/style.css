@@ -1,0 +1,132 @@
+html, body {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+}
+
+img.power {
+    margin-right: 0.75em;
+}
+
+.modalBox {
+    text-align: center;
+}
+
+.modalBoxBtn {
+    background-color: lightcoral;
+    color: #FFFFFF;
+}
+
+#interface {
+    display: flex;
+    justify-content: space-between;
+
+    /*
+        // La vidéo d'arrière-plan sera modifiée par javascript en fonction de l'IP du serveur
+        background-image: url("http://10.0.0.1/stream/video.mjpeg");
+    */
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+}
+
+#left-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    margin: 2%;
+}
+
+#marche {
+    display: flex;
+    flex-direction: column;
+}
+
+#vitesse {
+    display: flex;
+    flex-direction: column;
+}
+
+#right-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin: 2%;
+}
+
+/* Petits écrans */
+@media screen and (min-width: 380px) {
+    img.audio, img.power, img.config {
+        width: 50px;
+        height: 50px;
+    }
+
+    img.headlights {
+        width: 70px;
+        height: 70px;
+    }
+
+    img.motor {
+        width: 90px;
+        height: 90px;
+    }
+
+    img#turbo {
+        width: 90px;
+        height: 30px;
+    }
+}
+
+/* Ecrans moyens */
+@media screen and (min-width: 768px) {
+    img.audio, img.power, img.config {
+        width: 70px;
+        height: 70px;
+    }
+
+    img.headlights {
+        width: 90px;
+        height: 90px;
+    }
+
+    img.motor {
+        width: 150px;
+        height: 150px;
+    }
+
+    img#turbo {
+        width: 150px;
+        height: 50px;
+    }
+}
+
+/* Ecrans larges */
+@media screen and (min-width: 960px) {
+    img.audio, img.power, img.config {
+        width: 80px;
+        height: 80px;
+    }
+
+    img.headlights {
+        width: 120px;
+        height: 120px;
+    }
+
+    img.motor {
+        width: 200px;
+        height: 200px;
+    }
+
+    img#turbo {
+        width: 200px;
+        height: 66px;
+    }
+}

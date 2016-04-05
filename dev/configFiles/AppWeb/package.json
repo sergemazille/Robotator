@@ -1,0 +1,22 @@
+{
+  "name": "robotator",
+  "version": "1.0.0",
+  "description": "Robotator server",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "ejs": "^2.4.1",
+    "mplayer": "^2.0.1",
+    "onoff": "^1.0.4",
+    "express": "^4.13.4",
+    "polo": "^0.8.1",
+    "serialport": "^2.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Serge Mazille",
+  "license": "ISC"
+}
