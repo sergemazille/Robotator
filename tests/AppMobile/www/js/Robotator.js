@@ -27,14 +27,9 @@ var Robotator = function () {
             if (Client.isWebApp) {
                 this.getIPFromAppWeb(cbFunction);
             } else {
+                // Sinon c'est la partie Node du client qui se charge de récupérer l'adresse IP nécessaire
                 this.getIpFromNodeServices(cbFunction);
             }
-
-            //console.log(this.isInAutonomousMode(cbFunction));
-
-            //else if (!this.isInAutonomousMode(cbFunction)) { // Vérifie si Robotator est en mode autonome et lance la recherche du réseau dans le cas contraire (via le module Polo)
-            //    this.getIPFromAppWebService(cbFunction);
-            //}
         }
     }, {
         key: "getIPFromAppWeb",
@@ -80,11 +75,9 @@ var Robotator = function () {
                             //    cbFunction(`http://${serverIP}:${port}`);
                             //});
 
-                            jxcore("ipFromJX").call(function (serverIP) {
+                            jxcore("ipFromNodeServices").call(function (serverIP) {
                                 console.log(serverIP);
                             });
-
-                            //// Le module
                         }
                     });
                 });

@@ -4,7 +4,8 @@
 //##### Services requérant Node.js côté application mobile #####//
 //##############################################################//
 
-Mobile("ipFromJX").registerAsync(function(callback){
+
+Mobile("ipFromNodeServices").registerAsync(function(callback){
     var polo = require('polo');
     var services = polo();
     services.on('up', function (name, service) {
@@ -14,11 +15,6 @@ Mobile("ipFromJX").registerAsync(function(callback){
     });
 });
 
-//apps.on('up', function (name, service) {
-//    var serverIP = apps.get(name).host;
-//    //Mobile('receiveServerIP').call(serverIP);
-//    Mobile('msg').call(serverIP);
-//});
 //
 //
 //var tcpp = require('tcp-ping');
@@ -30,9 +26,3 @@ Mobile("ipFromJX").registerAsync(function(callback){
 //tcpp.ping({address: '192.168.0.45'}, function (err, data) {
 //    Mobile('msg').call(data);
 //});
-//
-//Mobile('getLocalStorage').call("Data");
-//
-
-
-//Mobile('msg').call(localStorage.getItem('myFirstKey'));

@@ -165,10 +165,10 @@ gulp.task('AppMobile_injectScripts', ['AppMobile_index'], function () {
         .pipe(gulp.dest('AppMobile/www'));
 });
 
-// Copie, 'babelise' et minifie le fichier app.js correspondant au serveur côté app mobile (JXCore)
+// Copie, 'babelise' et minifie le fichier nodeServices.js correspondant aux services Node.js pour l'application mobile
 gulp.task('AppMobile_serverScript', function () {
 
-    return gulp.src('dev/js/AppMobileJXCoreServer/app.js')
+    return gulp.src('dev/js/AppMobileJXCoreServer/nodeServices.js')
         .pipe(babel({
             presets: ['es2015']
         }))
