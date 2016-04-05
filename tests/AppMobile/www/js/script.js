@@ -1,12 +1,16 @@
 'use strict';
 
+//###########################################//
+//##### Code principal de l'application #####//
+//###########################################//
+
 function application(robotatorIP) {
 
     console.log("Dans l'application");
 
-    /**************************************/
-    /* *** CONSTANTES ET PARAMÉTRAGES *** */
-    /**************************************/
+    //##################################//
+    //### CONSTANTES ET PARAMÉTRAGES ###//
+    //##################################//
 
     var TURBO_ON = 't'; // vitesse turbo
     var TURBO_OFF = 'n'; // vitesse normale
@@ -36,9 +40,9 @@ function application(robotatorIP) {
     var videoStream = simpleIP + ":1234/stream/video.mjpeg";
     $('#interface').css("background-image", "url('" + videoStream + "')");
 
-    /**********************/
-    /* *** ÉVÈNEMENTS *** */
-    /**********************/
+    //##################//
+    //### ÉVÈNEMENTS ###//
+    //##################//
 
     // Gestion des évènements de l'Activity Android
     document.addEventListener("pause", switchOff, false);
@@ -58,9 +62,9 @@ function application(robotatorIP) {
         });
     }
 
-    /***********************************************/
-    /* *** COMPORTEMENT DES IMAGES DES BOUTONS *** */
-    /***********************************************/
+    //###########################################//
+    //### COMPORTEMENT DES IMAGES DES BOUTONS ###//
+    //###########################################//
 
     function switchButtonImage(image) {
 
@@ -77,9 +81,9 @@ function application(robotatorIP) {
         return !buttonOn; // l'état du bouton a désormais changé, on renvoie donc son inverse pour refléter son nouvel état
     }
 
-    /*******************/
-    /* *** MOTEURS *** */
-    /*******************/
+    //###############//
+    //### MOTEURS ###//
+    //###############//
 
     //$(".motor").on("dragstart", function () {
     //    // Change l'image du bouton
@@ -127,9 +131,9 @@ function application(robotatorIP) {
         $.post(ROBOTATOR_IP + "/turbo", { "turboState": turboState });
     });
 
-    /********************/
-    /* *** LUMIERES *** */
-    /********************/
+    //################//
+    //### LUMIERES ###//
+    //################//
 
     // LEDs associées à l'audio
     $(".led").on("click", function () {
@@ -156,9 +160,9 @@ function application(robotatorIP) {
         $.post(ROBOTATOR_IP + "/headlights", { "headlightsState": headlightsState });
     });
 
-    /*****************/
-    /* *** AUDIO *** */
-    /*****************/
+    //#############//
+    //### AUDIO ###//
+    //#############//
 
     $(".audio").on("click", function () {
         $.post(ROBOTATOR_IP + "/audio", {
@@ -166,9 +170,9 @@ function application(robotatorIP) {
         });
     });
 
-    /*************************/
-    /* *** CONFIGURATION *** */
-    /*************************/
+    //#####################//
+    //### CONFIGURATION ###//
+    //#####################//
 
     $("#config").on("click", function () {
         switchButtonImage(this); // Change l'image du bouton

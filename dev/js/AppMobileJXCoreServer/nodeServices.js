@@ -1,5 +1,9 @@
 // destination : 'Robotator\AppMobile\www\jxcore'
 
+//##############################################################//
+//##### Services requérant Node.js côté application mobile #####//
+//##############################################################//
+
 Mobile("ipFromJX").registerAsync(function(callback){
     var polo = require('polo');
     var services = polo();

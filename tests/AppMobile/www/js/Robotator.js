@@ -4,9 +4,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**********************************************************************************/
-/* ***** Fournit les informations sur le serveur (notamment son adresse IP) ***** */
-/**********************************************************************************/
+//#######################################################################################################//
+//##### Fournit les infos sur le serveur, récupère son adresse IP et lance l'application principale #####//
+//#######################################################################################################//
 
 var Robotator = function () {
     function Robotator() {

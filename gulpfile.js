@@ -1,8 +1,8 @@
 'use strict';
 
-//#######################//
-//# ### DÉPENDANCES ### #//
-//#######################//
+//###################//
+//### DÉPENDANCES ###//
+//###################//
 
 const gulp = require('gulp');
 const watch = require('gulp-watch');
@@ -17,9 +17,9 @@ const eslint = require('gulp-eslint'); // vérification du style
 
 // Note : indiquer le nom de la tâche précédente en second paramètre d'une autre permet de les chaîner et d'indiquer qu'il faut attendre qu'elle soit terminée.
 
-//#########################//
-//# ### BUILD APP WEB ### #//
-//#########################//
+//#####################//
+//### BUILD APP WEB ###//
+//#####################//
 
 // Copie les fichiers de ressources (images et audio)
 gulp.task('AppWeb_resources', function () {
@@ -96,9 +96,9 @@ gulp.task('AppWeb_serverNpmConfig', function () {
 });
 
 
-//############################//
-//# ### BUILD APP MOBILE ### #//
-//############################//
+//########################//
+//### BUILD APP MOBILE ###//
+//########################//
 
 // Copie les fichiers d'images
 gulp.task('AppMobile_resources', function () {
@@ -188,9 +188,9 @@ gulp.task('AppMobile_serverNpmConfig2', function () {
         .pipe(gulp.dest('AppMobile'));
 });
 
-//###############################//
-//# ### BUILD TESTS APP WEB ### #//
-//###############################//
+//###########################//
+//### BUILD TESTS APP WEB ###//
+//###########################//
 
 // Copie les fichiers de ressources (images et audio)
 gulp.task('AppWebTests_resources', function () {
@@ -278,9 +278,9 @@ gulp.task('AppWebTests_injectScripts', ['AppWebTests_index'], function () {
 });
 
 
-//##################################//
-//# ### BUILD TESTS APP MOBILE ### #//
-//##################################//
+//##############################//
+//### BUILD TESTS APP MOBILE ###//
+//##############################//
 
 // Copie les fichiers d'images
 gulp.task('AppMobileTests_resources', function () {
@@ -367,20 +367,9 @@ gulp.task('AppMobileTests_injectScripts', ['AppMobileTests_index'], function () 
         .pipe(gulp.dest('tests/AppMobile/www'));
 });
 
-
-//############################//
-//# ### TÂCHES GÉNÉRALES ### #//
-//############################//
-
-gulp.task('eslint', function () {
-    return gulp.src('dev/**/*')
-        .pipe(eslint())
-        .pipe(eslint.format());
-});
-
-//#############################//
-//# ### TÂCHES A EXÉCUTER ### #//
-//#############################//
+//#########################//
+//### TÂCHES A EXÉCUTER ###//
+//#########################//
 
 gulp.task('AppWeb', [
     'AppWeb_resources',
