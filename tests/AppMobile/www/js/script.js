@@ -152,7 +152,6 @@ function application(robotatorIP) {
     // Phares
     $(".headlights").on("click", function () {
 
-        console.log("Phares appuyés");
         var headlightsOn = switchButtonImage(this); // Change l'image du bouton et récupère son état allumé (true/false)
         var headlightsState = headlightsOn ? 1 : 0; // Si les phares sont désormais allumés, l'état est à 1, sinon 0
 

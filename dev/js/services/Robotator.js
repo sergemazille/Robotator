@@ -5,15 +5,13 @@
 class Robotator {
 
     constructor() {
-
-        this.PORT = "8888";
-        this.VIDEO_STREAM_PORT = "1234"; // configuré par le serveur UV4L
+        this.PORT = 8888; // TODO : Récupérer dans les préférences de l'utilisateur
+        this.VIDEO_STREAM_PORT = 1234; // configuré par le serveur UV4L
+        this.LAST_IP = localStorage.getItem("lastIp");
         this.AUTONOMOUS_MODE_IP = "10.0.0.1";
     }
 
     launchApp(cbFunction) {
-
-        let port = this.PORT;
 
         // Si l'utilisateur est sur un navigateur, c'est le serveur qui fournit la page, il suffit donc d'interroger l'API correspondante
         if (Client.isWebApp) {
@@ -27,15 +25,15 @@ class Robotator {
     getIPFromAppWeb(cbFunction) {
         console.log("Start getIpFromAppWeb");
 
-        let port = this.PORT;
+        let serverPort = this.PORT;
 
         $.ajax({
             method: "POST",
             url: "/getServerIP" // pas besoin d'avoir l'IP puisque c'est le serveur qui fournit la page
 
-        }).done(function (serverIP) {
-            console.log(`IP from 'getIPFromAppWeb' : http://${serverIP}:${port}`);
-            cbFunction(`http://${serverIP}:${port}`);
+        }).done(function (serverIp) {
+
+            cbFunction(`http://${serverIp}:${serverPort}`);
 
         }).fail(function () {
             console.log(`${Locales.network.SERVER_NOT_FOUND}`);
@@ -46,7 +44,13 @@ class Robotator {
     getIpFromNodeServices(cbFunction) {
         console.log("getIpFromNodeServices");
 
-        //JXCore stuff...
+        let serverPort = this.PORT;
+        let lastIp = this.LAST_IP;
+        let autonomousModeIp = this.AUTONOMOUS_MODE_IP;
+
+        let applicationNotLaunched = true;
+
+        //JXCore loading stuff...
         let inter = setInterval(function () {
 
             if (typeof jxcore == 'undefined') return;
@@ -63,17 +67,19 @@ class Robotator {
                         alert(msg);
                     } else {
 
-                        // Le module Polo de JXCore renvoie l'adresse IP du serveur
-                        //jxcore('receiveServerIP').register(function (serverIP) {
-                        //
-                        //    console.log(`IP from 'Polo' : http://${serverIP}:${port}`);
-                        //    cbFunction(`http://${serverIP}:${port}`);
-                        //});
-
-                        jxcore("ipFromNodeServices").call(function(serverIP){
-                            console.log(serverIP);
-
-                        });
+                        jxcore("ipFromNodeServices").call(
+                            {
+                                "serverPort": serverPort,
+                                "ipsToPing": [lastIp, autonomousModeIp]
+                            },
+                            function (serverIp) {
+                                if (applicationNotLaunched) {
+                                    console.log(serverIp);
+                                    localStorage.setItem("lastIp", serverIp); // Enregistre l'IP utilisée pour accélérer la prochaine connection
+                                    applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
+                                    cbFunction(`http://${serverIp}:${serverPort}`);
+                                }
+                            });
                     }
                 });
             });
@@ -157,11 +163,14 @@ class Robotator {
                         alert(msg);
                     } else {
 
+                        // Système de messages (debugging)
+                        jxcore('msg').register(function (msg) {
+                            console.log(`Message from nodeServices : ${msg}`);
+                        });
+
                         // Le module Polo de JXCore renvoie l'adresse IP du serveur
-                        jxcore('receiveServerIP').register(function (serverIP) {
-
+                        jxcore('getIPFromAppWebService').call(function (serverIP) {
                             console.log(`IP from 'Polo' : http://${serverIP}:${port}`);
-
                             cbFunction(`http://${serverIP}:${port}`);
                         });
                     }

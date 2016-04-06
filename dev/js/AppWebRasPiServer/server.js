@@ -34,6 +34,7 @@ const AUTONOMOUS_NETWORK_MODE = "autonomous";
 const LOCAL_NETWORK_MODE = "local";
 
 const PORT = 8888;
+const AUTONOMOUS_NETWORK_MODE_IP = "10.0.0.1";
 
 // Permet d'accéder au système pour modifier le mot de passe du réseau
 var exec = require('child_process').exec;
@@ -184,21 +185,22 @@ app.post('/getNetworkMode', function (req, res) {
 
     var currentNetworkMode = LOCAL_NETWORK_MODE; // Par défaut en local
 
-    // On récupère l'adresse IP du serveur pour vérifier si on est en mode autonome (10.0.0.1)
-    if (getServerIP() == '10.0.0.1') {
+    // On récupère l'adresse IP du serveur pour vérifier si on est en mode autonome
+    if (getServerIp() == AUTONOMOUS_NETWORK_MODE_IP) {
         currentNetworkMode = AUTONOMOUS_NETWORK_MODE;
     }
 
     res.send(currentNetworkMode);
 });
 
-// Renvoie l'adresse IP du serveur (AJAX)
+// Renvoie l'adresse IP et le port du serveur (requête AJAX)
 app.post('/getServerIp', function (req, res) {
-    res.send(getServerIP());
+    let serverIp = getServerIp();
+    res.send(serverIp);
 });
 
 // Renvoie l'adresse IP du serveur
-function getServerIP() {
+function getServerIp() {
 
     var net = os.networkInterfaces();
     var ipAddresses = [];
@@ -210,7 +212,7 @@ function getServerIP() {
             }
         }
     }
-    return ipAddresses[0];
+    return ipAddresses[0]; // la première du tableau est la bonne
 }
 
 /*************************/
@@ -251,20 +253,20 @@ app.post('/password', function (req, res) {
     res.end(); // Renvoyer le résultat de l'opération (avec consigne de rebooter (mode autonome) pour que le nouveau mot de passe soit effectif)
 });
 
-// Lance l'écoute sur le port 8888
+// Lance l'écoute sur le port défini en constante en début de code
 var server = app.listen(PORT, function () {
 });
 
 /********************************/
 /* *** BROADCAST IP SERVEUR *** */
 /********************************/
-var serverIP = getServerIP();
-if (serverIP != '10.0.0.1') { // On ne fait pas appel au module Polo si nous sommes en réseau autonome
+let serverIp = getServerIp();
+if (serverIp != AUTONOMOUS_NETWORK_MODE_IP) { // On ne fait pas appel au module Polo si nous sommes en réseau autonome
 
-    var apps = polo();
-    apps.put({
+    let services = polo();
+    services.put({
         name: 'robotator',
-        host: serverIP,
+        host: serverIp,
         port: PORT
     });
 }
