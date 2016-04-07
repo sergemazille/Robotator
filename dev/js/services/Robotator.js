@@ -42,7 +42,6 @@ class Robotator {
     }
 
     getIpFromNodeServices(cbFunction) {
-        console.log("getIpFromNodeServices");
 
         let serverPort = this.PORT;
         let lastIp = this.LAST_IP;
@@ -66,6 +65,10 @@ class Robotator {
                             msg = JSON && JSON.stringify ? JSON.stringify(err) : err;
                         alert(msg);
                     } else {
+
+                        jxcore("displayMsg").register(function(msg){
+                            console.log(msg);
+                        });
 
                         jxcore("ipFromNodeServices").call(
                             {

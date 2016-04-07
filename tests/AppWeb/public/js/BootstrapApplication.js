@@ -1,5 +1,9 @@
 'use strict';
 
+//########################################################################//
+//##### Lance les services nécessaires au démarrage de l'application #####//
+//########################################################################//
+
 function BootstrapApplication() {
 
     // Si le client est l'application web, on lance directement la recherche du serveur.
