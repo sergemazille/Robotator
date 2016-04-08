@@ -24,6 +24,8 @@ class Robotator {
             url: "/getServerIp" // pas besoin d'avoir l'IP puisque c'est le serveur qui fournit la page
 
         }).done(function (serverIp) {
+            config.ip = serverIp;
+            localStorage.setItem("config", JSON.stringify(config));
 
             appCallBack(`http://${serverIp}:${serverPort}`);
 
@@ -53,56 +55,13 @@ class Robotator {
                 function (serverIp) {
 
                     if (applicationNotLaunched) {
-
-                        // Met à jour l'IP utilisée dans 'localStorage'
                         config.ip = serverIp;
-                        localStorage.setItem("config", JSON.stringify(config)); // Enregistre l'IP utilisée pour accélérer la prochaine connection
+                        localStorage.setItem("config", JSON.stringify(config));
 
                         applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
                         appCallBack(`http://${serverIp}:${serverPort}`);
                     }
                 });
         });
-
-        //// chargement JXCore...
-        //let inter = setInterval(function () {
-        //    if (typeof jxcore == 'undefined') return;
-        //    clearInterval(inter);
-        //    jxcore.isReady(function () {
-        //        jxcore('nodeServices.js').loadMainFile(function (ret, err) {
-        //            if (err) {
-        //                let msg;
-        //                if (!err || err.replace)
-        //                    msg = err;
-        //                else
-        //                    msg = JSON && JSON.stringify ? JSON.stringify(err) : err;
-        //                alert(msg);
-        //// FIN chargement JXCore
-        //
-        //            } else {
-        //                console.log("JXCore");
-        //
-        //                // Fonction de debugging
-        //                jxcore("console").register(function (msg) {
-        //                    console.log(msg);
-        //                });
-        //
-        //                // Demande l'adresse IP du serveur à la partie Node.js pour lancer l'application
-        //                jxcore("ipFromNodeServices").call(
-        //                    {
-        //                        "serverPort": serverPort,
-        //                        "ipsToPing": [lastIp, autonomousModeIp]
-        //                    },
-        //                    function (serverIp) {
-        //                        if (applicationNotLaunched) {
-        //                            localStorage.setItem("lastIp", serverIp); // Enregistre l'IP utilisée pour accélérer la prochaine connection
-        //                            applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
-        //                            appCallBack(`http://${serverIp}:${serverPort}`);
-        //                        }
-        //                    });
-        //            }
-        //        });
-        //    });
-        //}, 5);
     }
 }

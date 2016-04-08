@@ -222,7 +222,7 @@ function getServerIp() {
 // Lit le fichier de configuration et retourne un objet json
 app.post('/getConfig', function (req, res) {
     try{
-        let config = fs.readFileSync("serverConfig.json");
+        let config = fs.readFileSync(`${__dirname}/serverConfig.json`);
         res.send(JSON.parse(config));
     }catch(err){
         logger.log(err);
