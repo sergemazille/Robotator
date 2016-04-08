@@ -1,38 +1,31 @@
-//#######################################################################################################//
-//##### Fournit les infos sur le serveur, récupère son adresse IP et lance l'application principale #####//
-//#######################################################################################################//
+//##############################################################################//
+//##### Récupère l'adresse IP du serveur et lance l'application principale #####//
+//##############################################################################//
 
 class Robotator {
 
-    constructor() {
-        this.PORT = 8888; // TODO : Récupérer dans les préférences de l'utilisateur
-        this.VIDEO_STREAM_PORT = 1234; // configuré par le serveur UV4L
-        this.LAST_IP = localStorage.getItem("lastIp");
-        this.AUTONOMOUS_MODE_IP = "10.0.0.1";
-    }
-
-    launchApp(cbFunction) {
-
+    launchApp(appCallBack) {
         // Si l'utilisateur est sur un navigateur, c'est le serveur qui fournit la page, il suffit donc d'interroger l'API correspondante
         if (Client.isWebApp) {
-            this.getIPFromAppWeb(cbFunction);
+            this.getIPFromAppWeb(appCallBack);
         } else {
             // Sinon c'est la partie Node du client qui se charge de récupérer l'adresse IP nécessaire
-            this.getIpFromNodeServices(cbFunction);
+            this.getIpFromNodeServices(appCallBack);
         }
     }
 
-    getIPFromAppWeb(cbFunction) {
+    getIPFromAppWeb(appCallBack) {
 
-        let serverPort = this.PORT;
+        let config = JSON.parse(localStorage.getItem("config"));
+        let serverPort = config.port;
 
         $.ajax({
             method: "POST",
-            url: "/getServerIP" // pas besoin d'avoir l'IP puisque c'est le serveur qui fournit la page
+            url: "/getServerIp" // pas besoin d'avoir l'IP puisque c'est le serveur qui fournit la page
 
         }).done(function (serverIp) {
 
-            cbFunction(`http://${serverIp}:${serverPort}`);
+            appCallBack(`http://${serverIp}:${serverPort}`);
 
         }).fail(function () {
             console.log(`${Locales.network.SERVER_NOT_FOUND}`);
@@ -40,64 +33,76 @@ class Robotator {
         });
     }
 
-    getIpFromNodeServices(cbFunction) {
+    getIpFromNodeServices(appCallBack) {
 
-        let serverPort = this.PORT;
-        let lastIp = this.LAST_IP;
-        let autonomousModeIp = this.AUTONOMOUS_MODE_IP;
+        let config = JSON.parse(localStorage.getItem("config"));
+        let serverPort = config.port;
+        let lastIp = config.ip;
+        let autonomousModeIp = config.autonomousModeIp;
 
         let applicationNotLaunched = true;
 
-        //JXCore loading stuff...
-        let inter = setInterval(function () {
+        jxcore('nodeServices.js').loadMainFile(function (ret, err) {
 
-            if (typeof jxcore == 'undefined') return;
-            clearInterval(inter);
-            jxcore.isReady(function () {
+            // Demande l'adresse IP du serveur à la partie Node.js pour lancer l'application
+            jxcore("ipFromNodeServices").call(
+                {
+                    "serverPort": serverPort,
+                    "ipsToPing": [lastIp, autonomousModeIp]
+                },
+                function (serverIp) {
 
-                jxcore('nodeServices.js').loadMainFile(function (ret, err) {
-                    if (err) {
-                        let msg;
-                        if (!err || err.replace)
-                            msg = err;
-                        else
-                            msg = JSON && JSON.stringify ? JSON.stringify(err) : err;
-                        alert(msg);
-                    } else {
+                    if (applicationNotLaunched) {
 
-                        // Debugging
-                        jxcore("displayMsg").register(function(msg){
-                            console.log(msg);
-                        });
+                        // Met à jour l'IP utilisée dans 'localStorage'
+                        config.ip = serverIp;
+                        localStorage.setItem("config", JSON.stringify(config)); // Enregistre l'IP utilisée pour accélérer la prochaine connection
 
-                        jxcore("ipFromNodeServices").call(
-                            {
-                                "serverPort": serverPort,
-                                "ipsToPing": [lastIp, autonomousModeIp]
-                            },
-                            function (serverIp) {
-                                if (applicationNotLaunched) {
-                                    localStorage.setItem("lastIp", serverIp); // Enregistre l'IP utilisée pour accélérer la prochaine connection
-                                    applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
-                                    cbFunction(`http://${serverIp}:${serverPort}`);
-                                }
-                            });
+                        applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
+                        appCallBack(`http://${serverIp}:${serverPort}`);
                     }
                 });
-            });
-        }, 5);
-    }
+        });
 
-    // getters
-    get port() {
-        return this.PORT;
-    }
-
-    get videoStreamPort() {
-        return this.VIDEO_STREAM_PORT;
-    }
-
-    get autonomousModeIP() {
-        return this.AUTONOMOUS_MODE_IP;
+        //// chargement JXCore...
+        //let inter = setInterval(function () {
+        //    if (typeof jxcore == 'undefined') return;
+        //    clearInterval(inter);
+        //    jxcore.isReady(function () {
+        //        jxcore('nodeServices.js').loadMainFile(function (ret, err) {
+        //            if (err) {
+        //                let msg;
+        //                if (!err || err.replace)
+        //                    msg = err;
+        //                else
+        //                    msg = JSON && JSON.stringify ? JSON.stringify(err) : err;
+        //                alert(msg);
+        //// FIN chargement JXCore
+        //
+        //            } else {
+        //                console.log("JXCore");
+        //
+        //                // Fonction de debugging
+        //                jxcore("console").register(function (msg) {
+        //                    console.log(msg);
+        //                });
+        //
+        //                // Demande l'adresse IP du serveur à la partie Node.js pour lancer l'application
+        //                jxcore("ipFromNodeServices").call(
+        //                    {
+        //                        "serverPort": serverPort,
+        //                        "ipsToPing": [lastIp, autonomousModeIp]
+        //                    },
+        //                    function (serverIp) {
+        //                        if (applicationNotLaunched) {
+        //                            localStorage.setItem("lastIp", serverIp); // Enregistre l'IP utilisée pour accélérer la prochaine connection
+        //                            applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application
+        //                            appCallBack(`http://${serverIp}:${serverPort}`);
+        //                        }
+        //                    });
+        //            }
+        //        });
+        //    });
+        //}, 5);
     }
 }

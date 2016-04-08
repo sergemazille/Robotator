@@ -2,7 +2,7 @@
 //##### Code principal de l'application #####//
 //###########################################//
 
-function application(robotatorIP) {
+function application(robotatorAddress) {
 
     console.log("Dans l'application");
 
@@ -16,7 +16,10 @@ function application(robotatorIP) {
     const AUTONOMOUS_NETWORK_MODE = "autonomous";
     const LOCAL_NETWORK_MODE = "local";
 
-    const ROBOTATOR_IP = robotatorIP;
+    const ROBOTATOR_ADDRESS = robotatorAddress;
+
+    const ROBOTATOR_IP = JSON.parse(localStorage.getItem("config")).ip;
+    const VIDEO_STREAM_PORT = JSON.parse(localStorage.getItem("config")).videoStreamPort;
 
     // Permet d'écouter le bon évènement en fonction du client : browser ou app (app par défaut)
     let BUTTON_DOWN = "touchstart";
@@ -29,18 +32,17 @@ function application(robotatorIP) {
         BUTTON_OUT = "mouseout";
     }
 
-    // Arrêt du timeout de chargement
-    clearTimeout(loadingTimeout);
-    $(".vex").hide();
-
     // Mise en place de la vidéo comme arrière-plan de l'application
-    let simpleIP = ROBOTATOR_IP.slice(0, -5); // On enlève le port puisque le flux vidéo est sur le port 1234
-    let videoStream = simpleIP + ":1234/stream/video.mjpeg";
+    let videoStream = `http://${ROBOTATOR_IP}:${VIDEO_STREAM_PORT}/stream/video.mjpeg`;
     $('#interface').css("background-image", "url('" + videoStream + "')");
 
     //##################//
     //### ÉVÈNEMENTS ###//
     //##################//
+
+    // Emission de l'évènement "appLaunched" (qui arrêtera le message de chargement)
+    let appLaunched = new Event("appLaunched");
+    document.dispatchEvent(appLaunched);
 
     // Gestion des évènements de l'Activity Android
     document.addEventListener("pause", switchOff, false);
@@ -54,7 +56,7 @@ function application(robotatorIP) {
     function switchOff() {
 
         $.post(
-            ROBOTATOR_IP + "/poweroff",
+            ROBOTATOR_ADDRESS + "/poweroff",
             {"info": "Power off"}, // juste pour info
             function (data) {
                 // Quitte l'application
@@ -91,7 +93,7 @@ function application(robotatorIP) {
     //    switchButtonImage(this);
     //
     //    $.post(
-    //        ROBOTATOR_IP + "/motor",
+    //        ROBOTATOR_ADDRESS + "/motor",
     //        {"direction": 0} // 0 stoppe les moteurs
     //    );
     //});
@@ -104,14 +106,14 @@ function application(robotatorIP) {
         // On remet le servomotor droit
         if ($(this).hasClass("tourne")) {
             $.post(
-                ROBOTATOR_IP + "/motor",
+                ROBOTATOR_ADDRESS + "/motor",
                 {"direction": '7'} // 7 remet le servomotor à 0
             );
         }
         // Ne s'applique pas s'il s'agit du servomotor (on ne veut pas couper les autres moteurs juste parce que l'on a tourné...)
         else {
             $.post(
-                ROBOTATOR_IP + "/motor",
+                ROBOTATOR_ADDRESS + "/motor",
                 {"direction": 0} // 0 stoppe les moteurs
             );
         }
@@ -124,7 +126,7 @@ function application(robotatorIP) {
 
         // Envoie la commande moteur
         $.post(
-            ROBOTATOR_IP + "/motor",
+            ROBOTATOR_ADDRESS + "/motor",
             {"direction": $(this).attr("id")}
         );
     });
@@ -137,7 +139,7 @@ function application(robotatorIP) {
 
         // Commande l'activation du turbo
         $.post(
-            ROBOTATOR_IP + "/turbo",
+            ROBOTATOR_ADDRESS + "/turbo",
             {"turboState": turboState}
         );
     });
@@ -155,7 +157,7 @@ function application(robotatorIP) {
 
         // Commande l'activation de la bonne LED
         $.post(
-            ROBOTATOR_IP + "/led",
+            ROBOTATOR_ADDRESS + "/led",
             {
                 "couleur": $(this).attr("id")
             },
@@ -173,7 +175,7 @@ function application(robotatorIP) {
 
         // Commande l'activation des phares
         $.post(
-            ROBOTATOR_IP + "/headlights",
+            ROBOTATOR_ADDRESS + "/headlights",
             {"headlightsState": headlightsState}
         );
     });
@@ -185,7 +187,7 @@ function application(robotatorIP) {
 
     $(".audio").on("click", function () {
         $.post(
-            ROBOTATOR_IP + "/audio",
+            ROBOTATOR_ADDRESS + "/audio",
             {
                 "couleur": $(this).attr("id")
             }
@@ -201,7 +203,7 @@ function application(robotatorIP) {
         let that = this;
 
         $.post( // Interroge le serveur pour connaître le mode réseau en cours
-            ROBOTATOR_IP + "/getNetworkMode",
+            ROBOTATOR_ADDRESS + "/getNetworkMode",
             function (currentNetworkMode) {
 
                 // Boîte de dialogue modale
@@ -245,7 +247,7 @@ function application(robotatorIP) {
     function changeNetworkMod(msg, data) {
         // Changement du mode réseau
         $.post(
-            ROBOTATOR_IP + "/changeNetworkMode",
+            ROBOTATOR_ADDRESS + "/changeNetworkMode",
             {"networkMode": data.networkMode}
         );
 
@@ -260,7 +262,7 @@ function application(robotatorIP) {
 
         // test de changement de mot de passe
         $.post (
-            ROBOTATOR_IP + "/password",
+            ROBOTATOR_ADDRESS + "/password",
             {"newPassword": newPassword}
         );
     });

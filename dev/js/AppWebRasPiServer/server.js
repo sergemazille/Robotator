@@ -1,6 +1,7 @@
-/**************************************/
-/* *** DEPENDANCES ET PARAMETRAGE *** */
-/**************************************/
+//##################################//
+//### DEPENDANCES ET PARAMETRAGE ###//
+//##################################//
+
 var GPIO = require('onoff').Gpio; // Contrôle des broches directement sur le RasPi
 
 var SerialPort = require('serialport').SerialPort; // Communique avec l'Arduberry
@@ -18,11 +19,10 @@ app.use(function (req, res, next) {
     next();
 });
 
-const fs = require('fs'); // fs permet de naviguer dans le filesystem (pour trouver et charger les fichiers audio)
+const fs = require('fs'); // fs permet de naviguer dans le filesystem
 const os = require('os'); // servira à récupérer l'adresse IP de connexion
 
-// Module Polo pour broadcaster l'adresse IP du serveur
-var polo = require('polo');
+const polo = require('polo'); // Module Polo pour broadcaster l'adresse IP du serveur
 
 // Constantes
 const TURBO_ON = 't'; // vitesse turbo
@@ -33,8 +33,8 @@ const STRAIGHT = '7'; // servo moteur droit
 const AUTONOMOUS_NETWORK_MODE = "autonomous";
 const LOCAL_NETWORK_MODE = "local";
 
-const PORT = 8888;
-const AUTONOMOUS_NETWORK_MODE_IP = "10.0.0.1";
+const PORT = 8888; // TODO : à récupérer depuis le fichier config
+const AUTONOMOUS_NETWORK_MODE_IP = "10.0.0.1";  // TODO : à récupérer depuis le fichier config
 
 // Permet d'accéder au système pour modifier le mot de passe du réseau
 var exec = require('child_process').exec;
@@ -72,9 +72,9 @@ function arduberryReset() {
 }
 arduberryReset();
 
-/***********************/
-/* *** SERVEUR WEB *** */
-/***********************/
+//###################//
+//### SERVEUR WEB ###//
+//###################//
 
 // Rendu de la page principale pour le client (index.ejs)
 app.get('/', function (req, res) {
@@ -215,9 +215,19 @@ function getServerIp() {
     return ipAddresses[0]; // la première du tableau est la bonne
 }
 
-/*************************/
-/* *** CONFIGURATION *** */
-/*************************/
+//#####################//
+//### CONFIGURATION ###//
+//#####################//
+
+// Lit le fichier de configuration et retourne un objet json
+app.post('/getConfig', function (req, res) {
+    try{
+        let config = fs.readFileSync("serverConfig.json");
+        res.send(JSON.parse(config));
+    }catch(err){
+        logger.log(err);
+    }
+});
 
 // Changement du mode réseau
 app.post('/changeNetworkMode', function (req, res) {
@@ -257,9 +267,10 @@ app.post('/password', function (req, res) {
 var server = app.listen(PORT, function () {
 });
 
-/********************************/
-/* *** BROADCAST IP SERVEUR *** */
-/********************************/
+//############################//
+//### BROADCAST IP SERVEUR ###//
+//############################//
+
 let serverIp = getServerIp();
 if (serverIp != AUTONOMOUS_NETWORK_MODE_IP) { // On ne fait pas appel au module Polo si nous sommes en réseau autonome
 

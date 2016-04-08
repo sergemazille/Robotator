@@ -49,7 +49,7 @@ gulp.task('AppWeb_scripts', ['AppWeb_css'], function () {
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(concat('script.js'))
+        .pipe(concat('application.js'))
         .pipe(uglify())
         .pipe(gulp.dest('AppWeb/public/js'));
 });
@@ -70,7 +70,7 @@ gulp.task('AppWeb_index', ['AppWeb_scripts'], function () {
 // Injecte la balise de script
 gulp.task('AppWeb_injectScripts', ['AppWeb_index'], function () {
 
-    let jsFile = gulp.src('AppWeb/public/js/script.js', {read: false});
+    let jsFile = gulp.src('AppWeb/public/js/application.js', {read: false});
 
     return gulp.src('AppWeb/public/index.ejs')
         .pipe(inject(jsFile, {relative: true}))
@@ -88,13 +88,12 @@ gulp.task('AppWeb_serverScript', function () {
         .pipe(gulp.dest('AppWeb'));
 });
 
-// Copie simplement le fichier 'package.json' correspondant au serveur RasPi
+// Copie simplement les fichiers 'package.json' et 'serverConfig.json' correspondant au serveur RasPi
 gulp.task('AppWeb_serverNpmConfig', function () {
-    return gulp.src('dev/configFiles/AppWeb/package.json')
+    return gulp.src(['dev/configFiles/AppWeb/package.json', 'dev/configFiles/general/serverConfig.json'])
         .pipe(changed('AppWeb'))
         .pipe(gulp.dest('AppWeb'));
 });
-
 
 //########################//
 //### BUILD APP MOBILE ###//
@@ -130,14 +129,13 @@ gulp.task('AppMobile_scripts', ['AppMobile_css'], function () {
             'dev/js/vendor/jquery.js',
             'dev/js/vendor/vex.js',
             'dev/js/services/**/*',
-            'dev/js/scripts/startLoading.js',
             'dev/js/scripts/BootstrapApplication.js',
-            'dev/js/scripts/script.js',
+            'dev/js/scripts/application.js',
         ])
         .pipe(babel({
             presets: ['es2015']
         }))
-        .pipe(concat('script.js'))
+        .pipe(concat('application.js'))
         .pipe(uglify())
         .pipe(gulp.dest('AppMobile/www/js'));
 });
@@ -158,7 +156,7 @@ gulp.task('AppMobile_index', ['AppMobile_scripts'], function () {
 // Injecte la balise de script
 gulp.task('AppMobile_injectScripts', ['AppMobile_index'], function () {
 
-    let jsFile = gulp.src('AppMobile/www/js/script.js', {read: false});
+    let jsFile = gulp.src('AppMobile/www/js/application.js', {read: false});
 
     return gulp.src('AppMobile/www/index.html')
         .pipe(inject(jsFile, {relative: true}))
@@ -176,9 +174,9 @@ gulp.task('AppMobile_serverScript', function () {
         .pipe(gulp.dest('AppMobile/www/jxcore'));
 });
 
-// Copie simplement le fichier 'package.json' correspondant au serveur Node de l'app mobile
+// Copie simplement les fichiers 'package.json' et 'serverConfig.json' correspondant au serveur Node de l'app mobile
 gulp.task('AppMobile_serverNpmConfig', function () {
-    return gulp.src('dev/configFiles/AppMobile/package.json')
+    return gulp.src(['dev/configFiles/AppMobile/package.json', 'dev/configFiles/general/serverConfig.json'])
         .pipe(gulp.dest('AppMobile/www/jxcore'));
 });
 
@@ -263,8 +261,8 @@ gulp.task('AppWebTests_injectScripts', ['AppWebTests_index'], function () {
             'tests/AppWeb/public/js/Paths.js',
             'tests/AppWeb/public/js/Robotator.js',
             'tests/AppWeb/public/js/Locales.js',
-            'tests/AppWeb/public/js/startLoading.js',
-            'tests/AppWeb/public/js/script.js',
+            'tests/AppWeb/public/js/MessageBox.js',
+            'tests/AppWeb/public/js/application.js',
             'tests/AppWeb/public/js/BootstrapApplication.js',
             'tests/AppWeb/public/js/qunit.js',
             'tests/AppWeb/public/js/unitTests/**/*'
@@ -353,9 +351,9 @@ gulp.task('AppMobileTests_injectScripts', ['AppMobileTests_index'], function () 
             'tests/AppMobile/www/js/Paths.js',
             'tests/AppMobile/www/js/Robotator.js',
             'tests/AppMobile/www/js/Locales.js',
-            'tests/AppMobile/www/js/startLoading.js',
+            'tests/AppMobile/www/js/MessageBox.js',
             'tests/AppMobile/www/js/BootstrapApplication.js',
-            'tests/AppMobile/www/js/script.js',
+            'tests/AppMobile/www/js/application.js',
             'tests/AppMobile/www/js/qunit.js',
             'tests/AppMobile/www/js/unitTests/**/*'
         ],

@@ -1,8 +1,8 @@
 'use strict';
 
-/**************************************/
-/* *** PARAMÉTRAGES DU CHARGEMENT *** */
-/**************************************/
+//#################################//
+//##### MESSAGE DE CHARGEMENT #####//
+//#################################//
 
 // Si Robotator n'est pas trouvé en 60 secondes, il y a un problème
 var loadingTimeout = setTimeout(function () {
