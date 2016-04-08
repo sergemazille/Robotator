@@ -2,9 +2,9 @@
 //##### Récupère l'adresse IP du serveur et lance l'application principale #####//
 //##############################################################################//
 
-class Robotator {
+class Connection {
 
-    launchApp(appCallBack) {
+    constructor(appCallBack) {
         // Si l'utilisateur est sur un navigateur, c'est le serveur qui fournit la page, il suffit donc d'interroger l'API correspondante
         if (Client.isWebApp) {
             this.getIPFromAppWeb(appCallBack);
@@ -56,6 +56,7 @@ class Robotator {
 
                     if (applicationNotLaunched) {
                         config.ip = serverIp;
+                        console.dir(config);
                         localStorage.setItem("config", JSON.stringify(config));
 
                         applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application

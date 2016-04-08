@@ -32,6 +32,8 @@ function application(robotatorAddress) {
         BUTTON_OUT = "mouseout";
     }
 
+    console.log(`http://${ROBOTATOR_IP}:${VIDEO_STREAM_PORT}/stream/video.mjpeg`);
+
     // Mise en place de la vidéo comme arrière-plan de l'application
     let videoStream = `http://${ROBOTATOR_IP}:${VIDEO_STREAM_PORT}/stream/video.mjpeg`;
     $('#interface').css("background-image", "url('" + videoStream + "')");

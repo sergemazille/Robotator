@@ -6,17 +6,13 @@
 let messageBox = new MessageBox();
 messageBox.robotatorLoading();
 
-// Charge les paramètres d'environement
-let config = new Config(BootstrapApplication);
-
 function BootstrapApplication() {
 
     // Si le client est l'application web, on lance directement la recherche du serveur.
     // Sinon il faut attendre que l'appareil soit prêt
     if (Client.isWebApp) {
-        // Passe la fonction principale un objet Robotator qui va déterminer l'adresse IP complète du serveur pour lancer l'application en fonction
-        let robotator = new Robotator();
-        robotator.launchApp(application);
+        // Passe la fonction principale à l'objet Connection
+        new Connection(application);
     } else {
         // Initialisation de Cordova
         var app = {
@@ -27,10 +23,12 @@ function BootstrapApplication() {
                 document.addEventListener('deviceready', this.onDeviceReady, false);
             },
             onDeviceReady: function () {
-                let robotator = new Robotator();
-                robotator.launchApp(application);
+                new Connection(application);
             }
         };
         app.initialize();
     }
 }
+
+// Charge les paramètres d'environement et lance le bootstrap
+new Config(BootstrapApplication);
