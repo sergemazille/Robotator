@@ -9,30 +9,39 @@ html, body {
 }
 
 /* Boutons choix mode réseau */
-.choiceBtn{
+.choiceBtn {
     background-color: #dddddd;
-    padding: 0.4em;
+    padding: 5px 0 5px 15px;
     border-radius: 5px;
-    /*box-shadow: none;*/
-    /*border: none;*/
     width: 100%;
     margin: 0.5em 0;
     text-align: start;
     font-size: 0.9em;
 }
 
-.choiceBtn:hover{
+label.labelBox:hover {
     cursor: pointer;
     cursor: hand;
 }
 
-label > input{
+label > input {
     visibility: hidden; /* invisible */
     position: absolute; /* non clickable */
 }
 
-label > input:checked + p{ /* style d'un élément 'p' quand le bouton radio est checked */
+p.choiceBtn > img{
+    float: right;
+    margin-right: 15px;
+}
+
+input:checked + p.choiceBtn > img{
+    margin-right: 13px; /* compense la bordure de 2px */
+}
+
+label > input:checked + p.choiceBtn { /* style d'un élément 'p' quand le bouton radio est checked */
     background-color: #acc5e0;
+    border: 2px solid midnightblue;
+    padding: 3px 0 3px 13px; /* Le texte ne bougera pas lors de l'ajout de la bordure*/
 }
 /* FIN Boutons choix mode réseau */
 

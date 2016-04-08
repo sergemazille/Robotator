@@ -57,8 +57,8 @@ class MessageBox {
 
     static networkModeChoice(currentNetworkMode, appCallback) {
 
-        let pushButtons = `<label><input type="radio" name="choice" id="local" value="local" /><p class="choiceBtn">${Locales.network.CHOICE_LOCAL}</p></label>
-        <label><input type="radio" name="choice" id="autonomous" value="autonomous" /><p class="choiceBtn">${Locales.network.CHOICE_AUTONOMOUS}</p></label>`
+        let pushButtons = `<label class="labelBox"><input type="radio" name="choice" id="local" value="local" /><p class="choiceBtn">${Locales.network.CHOICE_LOCAL}<img src="${Paths.images.LOCAL_NETWORK_MODE}" /></p></label>
+        <label class="labelBox"><input type="radio" name="choice" id="autonomous" value="autonomous" /><p class="choiceBtn">${Locales.network.CHOICE_AUTONOMOUS}<img src="${Paths.images.AUTONOMOUS_NETWORK_MODE}" /></p></label>`
 
         // Boîte de dialogue modale
         vex.dialog.open({
