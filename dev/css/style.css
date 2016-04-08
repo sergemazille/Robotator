@@ -8,6 +8,34 @@ html, body {
     padding: 0;
 }
 
+/* Boutons choix mode réseau */
+.choiceBtn{
+    background-color: #dddddd;
+    padding: 0.4em;
+    border-radius: 5px;
+    /*box-shadow: none;*/
+    /*border: none;*/
+    width: 100%;
+    margin: 0.5em 0;
+    text-align: start;
+    font-size: 0.9em;
+}
+
+.choiceBtn:hover{
+    cursor: pointer;
+    cursor: hand;
+}
+
+label > input{
+    visibility: hidden; /* invisible */
+    position: absolute; /* non clickable */
+}
+
+label > input:checked + p{ /* style d'un élément 'p' quand le bouton radio est checked */
+    background-color: #acc5e0;
+}
+/* FIN Boutons choix mode réseau */
+
 img.power {
     margin-right: 0.75em;
 }
@@ -16,7 +44,7 @@ img.power {
     text-align: center;
 }
 
-.modalBoxBtn {
+.modalBoxCancelBtn {
     background-color: lightcoral;
     color: #FFFFFF;
 }
@@ -42,7 +70,7 @@ img.power {
     flex-direction: column;
     justify-content: space-between;
 
-    margin: 2%;
+    margin: 2em;
 }
 
 #marche {

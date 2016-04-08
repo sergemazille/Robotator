@@ -32,8 +32,6 @@ function application(robotatorAddress) {
         BUTTON_OUT = "mouseout";
     }
 
-    console.log(`http://${ROBOTATOR_IP}:${VIDEO_STREAM_PORT}/stream/video.mjpeg`);
-
     // Mise en place de la vidéo comme arrière-plan de l'application
     let videoStream = `http://${ROBOTATOR_IP}:${VIDEO_STREAM_PORT}/stream/video.mjpeg`;
     $('#interface').css("background-image", "url('" + videoStream + "')");
@@ -208,37 +206,22 @@ function application(robotatorAddress) {
             ROBOTATOR_ADDRESS + "/getNetworkMode",
             function (currentNetworkMode) {
 
-                // Boîte de dialogue modale
-                vex.dialog.open({
-                    message: Locales.network.CHOICE_QUESTION,
-                    input: `<input id="local" name="networkMode" type="radio" value="local" checked="checked" /><label for="local">${Locales.network.CHOICE_LOCAL}</label><br>
-                        <input id="autonomous" name="networkMode" type="radio" value="autonomous" /><label for="autonomous">${Locales.network.CHOICE_AUTONOMOUS}</label>`,
-                    buttons: [
-                        $.extend({}, vex.dialog.buttons.YES, {
-                            text: Locales.buttons.VALIDATE
-                        }), $.extend({}, vex.dialog.buttons.NO, {
-                            text: Locales.buttons.CANCEL
-                        })
-                    ],
-
-                    callback: function (data) {
-                        switchButtonImage(that); // Change l'image du bouton
-
-                        if (data === false) {
-
-                            return;
-
-                            // Vérifie également que le nouveau mode réseau choisi n'est pas déjà celui en cours, pour éviter un redémarrage inutile
-                        } else if (AUTONOMOUS_NETWORK_MODE === data.networkMode && AUTONOMOUS_NETWORK_MODE != currentNetworkMode) {
-
-                            let msg = Locales.network.AUTONOMOUS;
-                            changeNetworkMod(msg, data);
-
-                        } else if (LOCAL_NETWORK_MODE === data.networkMode && LOCAL_NETWORK_MODE != currentNetworkMode) {
-
-                            let msg = Locales.network.LOCAL;
-                            changeNetworkMod(msg, data);
-
+                MessageBox.networkModeChoice(currentNetworkMode, function (choice) {
+                    if (choice === false) {
+                        switchButtonImage(that); // Remet l'image du bouton config à zéro
+                        return; // Ne change rien
+                    } else {
+                        switch (choice) {
+                            case LOCAL_NETWORK_MODE:
+                                MessageBox.messageAlert(Locales.network.LOCAL, true);
+                                changeNetworkMod(LOCAL_NETWORK_MODE);
+                                break;
+                            case AUTONOMOUS_NETWORK_MODE:
+                                MessageBox.messageAlert(Locales.network.AUTONOMOUS, true);
+                                changeNetworkMod(AUTONOMOUS_NETWORK_MODE);
+                                break;
+                            default:
+                                break;
                         }
                     }
                 });
@@ -246,15 +229,12 @@ function application(robotatorAddress) {
         );
     });
 
-    function changeNetworkMod(msg, data) {
+    function changeNetworkMod(networkMode) {
         // Changement du mode réseau
         $.post(
             ROBOTATOR_ADDRESS + "/changeNetworkMode",
-            {"networkMode": data.networkMode}
+            {"networkMode": networkMode}
         );
-
-        // Informe l'utilisateur
-        vexAlert(msg, true) // true indique qu'il faut également fermer l'application
     }
 
     // Changement du mot de passe de connexion au réseau de Robotator

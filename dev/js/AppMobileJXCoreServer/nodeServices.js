@@ -33,17 +33,15 @@ Mobile("ipFromNodeServices").registerAsync(function (data, connectionCallback) {
 
         tcpp.probe(ipsToPing[i], serverPort, function (err, serverAvailable) {
             if (serverAvailable && ipNotFound) {
-                Mobile("console").call("From Ping");
 
                 connectionCallback(ipsToPing[i]);
                 ipNotFound = false; // Empêche les prochaines recherches ('break' ne semble pas fonctionner...)
                 // TODO : recherche explication problème avec 'break'
             }
             // Lance le service Polo si aucune IP testée n'est valide
-            else if(ipsToPing.length-1 == i && ipNotFound){
+            else if (ipsToPing.length - 1 == i && ipNotFound) {
                 let services = polo();
                 services.once('up', function (name) {
-                        Mobile("console").call("From Polo");
                         let serverIp = services.get(name).host;
                         connectionCallback(serverIp);
                     }
@@ -51,7 +49,4 @@ Mobile("ipFromNodeServices").registerAsync(function (data, connectionCallback) {
             }
         });
     }
-
-    // Si aucune des adresses testées n'est valide, le service du module Polo est utilisé
-
 });

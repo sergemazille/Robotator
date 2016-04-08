@@ -56,7 +56,6 @@ class Connection {
 
                     if (applicationNotLaunched) {
                         config.ip = serverIp;
-                        console.dir(config);
                         localStorage.setItem("config", JSON.stringify(config));
 
                         applicationNotLaunched = false; // Empêche de lancer plusieurs fois l'application

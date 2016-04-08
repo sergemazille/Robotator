@@ -3,8 +3,7 @@
 //########################################################################//
 
 // Lance le message de chargement
-let messageBox = new MessageBox();
-messageBox.robotatorLoading();
+MessageBox.robotatorLoading();
 
 function BootstrapApplication() {
 
