@@ -8,3 +8,6 @@ dev/js/vendor/*.js
 
 AppMobile/*
 AppWeb/*
+
+tests/AppMobile/*
+tests/AppWeb/*
