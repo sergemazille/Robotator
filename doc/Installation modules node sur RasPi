@@ -1,4 +1,0 @@
-Certains modules ont besoin d'être installés en mode unsafe.
-
-Pour installer l'ensembe des modules, taper :
-sudo npm install --unsafe-perm
