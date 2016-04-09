@@ -2,6 +2,8 @@
 //##### GESTION DES MESSAGES #####//
 //################################//
 
+//TODO : Enlever les précédents messages avant d'en afficher un nouveau
+
 class MessageBox {
 
     static robotatorLoading() {
