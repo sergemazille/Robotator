@@ -3,7 +3,7 @@ Serge Mazille <serge.mazille@gmail.com>
 v1.0, 09-04-2016
 image::images/logo.png[Logo]
 
-
+:toc:
 
 :sectnums!:
 :sectlinks:
