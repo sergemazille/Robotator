@@ -1,7 +1,7 @@
 = Robotator: Documentation développeur
 Serge Mazille <serge.mazille@gmail.com>
 v1.0, 09-04-2016
-image::logo.png[Logo]
+image::images/logo.png[Logo]
 
 
 
@@ -16,7 +16,7 @@ Ce projet est basé sur l’utilisation des nouvelles avancées technologiques, 
 L’aspect matériel de Robotator est géré par un mini-ordinateur Raspberry Pi qui lui-même contrôle une carte électronique de type Arduino (Arduberry) pour le pilotage d’une carte de contrôle-moteurs.
 
 .Prototype de Robotator (30/03/2016)
-image::prototype.png[Prototype de Robotator]
+image::images/prototype.png[Prototype de Robotator]
 
 D’un point de vue logiciel, la principale technologie utilisée est Javascript pour sa bonne intégration avec les projets de type IoT (Internet of Things).
 
