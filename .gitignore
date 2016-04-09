@@ -2,13 +2,14 @@
 node_modules
 *.bat
 
-doc/*
+documentation/*
 
 Ressources/*
 
 dev/resources/application/audio/*mp3
 dev/css/vendor/*.css
 dev/js/vendor/*.js
+dev/resources/documentation/*
 
 AppMobile/*
 AppWeb/*
