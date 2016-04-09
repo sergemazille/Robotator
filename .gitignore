@@ -2,11 +2,9 @@
 node_modules
 *.bat
 
-doc/*.docx
-doc/*.doc
-doc/*.pdf
+doc/*
 
-Projet/*
+Ressources/*
 
 dev/resources/application/audio/*mp3
 dev/css/vendor/*.css
