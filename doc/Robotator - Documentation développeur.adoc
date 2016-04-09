@@ -1,0 +1,56 @@
+= Robotator: Documentation développeur
+Serge Mazille <serge.mazille@gmail.com>
+v1.0, 09-04-2016
+image::logo.png[Logo]
+
+
+
+:sectnums!:
+:sectlinks:
+== Le projet Robotator
+
+Robotator est un projet personnel de Robotique, ayant pour objectif de réaliser un petit robot, contrôlable à distance à l’aide d’un smartphone ou d’un navigateur internet.
+
+Ce projet est basé sur l’utilisation des nouvelles avancées technologiques, que ce soit en termes de hardware, grâce à la démocratisation des cartes électroniques miniaturisées ou encore en termes de software, avec, entre autre, l’adoption des nouvelles spécifications de Javascript et de PHP.
+
+L’aspect matériel de Robotator est géré par un mini-ordinateur Raspberry Pi qui lui-même contrôle une carte électronique de type Arduino (Arduberry) pour le pilotage d’une carte de contrôle-moteurs.
+
+.Prototype de Robotator (30/03/2016)
+image::prototype.png[Prototype de Robotator]
+
+D’un point de vue logiciel, la principale technologie utilisée est Javascript pour sa bonne intégration avec les projets de type IoT (Internet of Things).
+
+Le côté client, qui peut être un navigateur Internet, un smartphone ou encore une tablette, est construit sur la base des technologies traditionnellement associées à Internet : HTML5, CSS, Javascript.
+
+Le côté serveur, c’est-à-dire le Raspberry Pi installé sur Robotator, est quand-à-lui piloté par Node.js, qui permet d’utiliser Javascript en dehors d’un navigateur Internet.
+
+Le but premier de cette documentation est de servir de référence en traitant en détail la partie logicielle du projet.
+
+:sectnums:
+
+== Fonctionnement général
+
+Avant de traiter en détail les aspects logiciels du projet Robotator, commençons par en avoir une vue d’ensemble.
+
+=== La communication
+
+Les technologies envisagées pour la communication entre l’appareil de commande et Robotator ont été dans un premier temps la connexion filaire, à l’aide d’un câble Ethernet, l’utilisation du Bluetooth, l’utilisation du WiFi et une connexion radio, telle que celle utilisée pour les véhicules radiocommandés de modélisme.
+
+La solution filaire a été rapidement écartée pour des raisons évidentes de limitation de portée.
+
+La connexion radio, même si elle n’a pas été prototypée, a également été écartée, malgré ses avantages en termes de stabilité et de portée, car elle se limite à l’utilisation d’appareils de commande équipés d’un émetteur radio, moins répandus.
+
+Après quelques tests du côté de la technologie Bluetooth, notamment en détournant l’utilisation normale d’une manette de Wii, il est devenu évident que la communication avec Robotator devait tirer avantage de la technologie WiFi.
+
+Le WiFi permet d’allonger la portée et de communiquer avec Robotator à partir de nombreux appareils devenus omni présents aujourd’hui : les smartphones et les tablettes.
+
+De plus il est également possible d’utiliser une box internet comme routeur et de connecter Robotator à son réseau local domestique, et de le piloter à partir d’un ordinateur via un navigateur Internet.
+
+Les premiers prototypes du robot ont été réalisés sur la base d’une carte Raspberry Pi 2 qui n’a pas de capacités WiFi natives. Mais il est relativement facile et peu coûteux de lui rajouter un dongle WiFi lui conférant ces capacités.
+
+Entre temps la fondation Raspberry Pi a sorti un nouveau modèle qui embarque nativement le WiFi et les prochains prototypes de Robotator n’auront donc plus besoin de l’ajout d’un élément matériel supplémentaire.
+
+Il est à noter que rien n’empêche de connecter Robotator sur une box Internet ou un routeur à l’aide d’un câble Ethernet.
+Même si cela limite les possibilités de déplacement du robot, il conserve ses autres fonctionnalités.
+
+=== Les fonctionnalités

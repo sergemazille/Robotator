@@ -2,6 +2,7 @@
 node_modules
 *.bat
 
+doc/*.docx
 doc/*.doc
 doc/*.pdf
 
