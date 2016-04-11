@@ -24,12 +24,12 @@ function application(robotatorAddress) {
     // Permet d'écouter le bon évènement en fonction du client : browser ou app (app par défaut)
     let BUTTON_DOWN = "touchstart";
     let BUTTON_UP = "touchend";
-    let BUTTON_OUT = "touchleave";
+    //let BUTTON_OUT = "touchleave";
 
     if (Client.isWebApp) {
         BUTTON_DOWN = "mousedown";
         BUTTON_UP = "mouseup";
-        BUTTON_OUT = "mouseout";
+        //BUTTON_OUT = "mouseout";
     }
 
     // Mise en place de la vidéo comme arrière-plan de l'application
@@ -206,11 +206,13 @@ function application(robotatorAddress) {
             ROBOTATOR_ADDRESS + "/getNetworkMode",
             function (currentNetworkMode) {
 
-                MessageBox.networkModeChoice(currentNetworkMode, function (choice) {
+                let messageBox = new MessageBox();
+                messageBox.networkModeChoice(currentNetworkMode, function (choice) {
                     if (choice === false) {
                         switchButtonImage(that); // Remet l'image du bouton config à zéro
                         return; // Ne change rien
                     } else {
+
                         switch (choice) {
                             case LOCAL_NETWORK_MODE:
                                 MessageBox.messageAlert(Locales.network.LOCAL, true);

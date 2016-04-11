@@ -59,7 +59,6 @@ var serial = new SerialPort("/dev/ttyAMA0", {baudrate: 9600});
 // Affiche 'open' quand le port série est opérationnel
 serial.on("open", function () {
     //logger.log('open');
-
     // Initialisation moteurs
     serial.write(TURBO_OFF); // Turbo off
     serial.write(STOP_MOTORS); // Moteurs off
@@ -281,5 +280,3 @@ if (serverIp != AUTONOMOUS_NETWORK_MODE_IP) { // On ne fait pas appel au module 
         port: PORT
     });
 }
-
-

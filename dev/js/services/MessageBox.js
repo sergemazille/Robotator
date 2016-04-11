@@ -2,15 +2,18 @@
 //##### GESTION DES MESSAGES #####//
 //################################//
 
-//TODO : Enlever les précédents messages avant d'en afficher un nouveau
-
 class MessageBox {
 
-    static robotatorLoading() {
+    constructor(){
+        MessageBox.closeMessageBox(); // enlève les éventuels messages précédents
+        vex.defaultOptions.className = 'vex-theme-default'; // Choix du theme par défaut de la fenêtre modale
+    }
+
+    robotatorLoading() {
 
         // Si Robotator n'est pas trouvé en 60 secondes, il y a un problème
         let loadingTimeout = setTimeout(function () {
-            $(".vex").hide(); // cache le modal de chargement
+            MessageBox.closeMessageBox(); // cache le modal de chargement
             MessageBox.messageAlert(Locales.loading.FAILED, true); // la valeur 'true' fermera l'application
         }, 60000);
 
@@ -20,7 +23,6 @@ class MessageBox {
         });
 
         // Message de chargement
-        vex.defaultOptions.className = 'vex-theme-default'; // Choix du theme par défaut de la fenêtre modale
         vex.dialog.alert({
             message: Locales.loading.IN_PROGRESS,
             contentClassName: 'modalBox',
@@ -35,29 +37,13 @@ class MessageBox {
             escapeButtonCloses: false,
             callback: function (cbData) {
                 if (false === cbData) {
-                    vexAlert(Locales.loading.FAILED, true);
+                    MessageBox.messageAlert(Locales.loading.FAILED, true);
                 }
             }
         });
     }
 
-    static closeMessageBox() {
-        $(".vex").hide();
-    }
-
-    static messageAlert(msg, closeApp) {
-        vex.dialog.alert({
-            message: msg,
-            contentClassName: 'modalBox',
-            callback: function () {
-                if (closeApp && Client.isMobileApp) {
-                    navigator.app.exitApp(); // L'application s'éteint pour laisser l'utilisateur changer ses réglages de connexion
-                }
-            }
-        });
-    }
-
-    static networkModeChoice(currentNetworkMode, appCallback) {
+    networkModeChoice(currentNetworkMode, appCallback) {
 
         let pushButtons = `<label class="labelBox"><input type="radio" name="choice" id="local" value="local" /><p class="choiceBtn">${Locales.network.CHOICE_LOCAL}<img src="${Paths.images.LOCAL_NETWORK_MODE}" /></p></label>
         <label class="labelBox"><input type="radio" name="choice" id="autonomous" value="autonomous" /><p class="choiceBtn">${Locales.network.CHOICE_AUTONOMOUS}<img src="${Paths.images.AUTONOMOUS_NETWORK_MODE}" /></p></label>`
@@ -83,6 +69,22 @@ class MessageBox {
             if (currentNetworkMode === this.id) {
                 this.setAttribute("checked", "checked"); // Permet d'indiquer visuellement quel est le mode réseau courant
                 this.setAttribute("value", false); // Ne changera pas le mode s'il s'agit déjà du mode courant
+            }
+        });
+    }
+
+    static closeMessageBox() {
+        $(".vex").hide();
+    }
+
+    static messageAlert(msg, closeApp) {
+        vex.dialog.alert({
+            message: msg,
+            contentClassName: 'modalBox',
+            callback: function () {
+                if (closeApp && Client.isMobileApp) {
+                    navigator.app.exitApp(); // L'application s'éteint pour laisser l'utilisateur changer ses réglages de connexion
+                }
             }
         });
     }

@@ -2,10 +2,10 @@
 
 // paramétrages
 let testIp = null;
-function testRobotator(receivedIP){
+function testConnection(receivedIP){
     testIp = receivedIP;
 }
-new Robotator().launchApp(testRobotator);
+new Connection(testConnection);
 
 // Tests
 QUnit.test("Le serveur retourne bien une adresse IP", function( assert ) {
