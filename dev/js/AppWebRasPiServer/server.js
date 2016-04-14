@@ -2,12 +2,12 @@
 //### DEPENDANCES ET PARAMETRAGE ###//
 //##################################//
 
-var GPIO = require('onoff').Gpio; // Contrôle des broches directement sur le RasPi
+const GPIO = require('onoff').Gpio; // Contrôle des broches directement sur le RasPi
 
-var SerialPort = require('serialport').SerialPort; // Communique avec l'Arduberry
+const SerialPort = require('serialport').SerialPort; // Communique avec l'Arduberry
 
-var express = require('express'); // Serveur web
-var app = express(); // Assignation du serveur à la variable 'app'
+const express = require('express'); // Serveur web
+const app = express(); // Assignation du serveur à la variable 'app'
 app.use(express.static(__dirname + '/public')); // Indique où sont les fichiers statiques
 app.set('view engine', 'ejs'); // Le moteur de template est 'ejs'
 app.set('views', __dirname + '/public'); // Evite de repréciser le chemin complet des vues lors du rendu
@@ -37,7 +37,7 @@ const PORT = 8888; // TODO : à récupérer depuis le fichier config
 const AUTONOMOUS_NETWORK_MODE_IP = "10.0.0.1";  // TODO : à récupérer depuis le fichier config
 
 // Permet d'accéder au système pour modifier le mot de passe du réseau
-var exec = require('child_process').exec;
+const exec = require('child_process').exec;
 
 // Debugging
 const Console = require('console').Console;
@@ -45,16 +45,16 @@ const output = fs.createWriteStream(__dirname + '/debug.log');
 const logger = new Console(output);
 
 // Audio
-var MPlayer = require('mplayer');
-var player = new MPlayer();
+const MPlayer = require('mplayer');
+const player = new MPlayer();
 
 // Paramétrages de body-parser pour récupérer les requêtes de type POST
-var bodyParser = require("body-parser");
+const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 // Ouvre l'écoute du port série
-var serial = new SerialPort("/dev/ttyAMA0", {baudrate: 9600});
+const serial = new SerialPort("/dev/ttyAMA0", {baudrate: 9600});
 
 // Affiche 'open' quand le port série est opérationnel
 serial.on("open", function () {
@@ -85,7 +85,7 @@ app.get('/', function (req, res) {
 // Contrôle moteurs
 app.post('/motor', function (req, res) {
 
-    var direction = req.body.direction;
+    let direction = req.body.direction;
     serial.write(direction);
     res.end();
 });
@@ -93,7 +93,7 @@ app.post('/motor', function (req, res) {
 // Contrôle du turbo
 app.post('/turbo', function (req, res) {
 
-    var turboState = req.body.turboState; // Récupère la vitesse (t = turbo, n = normal)
+    let turboState = req.body.turboState; // Récupère la vitesse (t = turbo, n = normal)
     serial.write(turboState);
 
     res.end();
@@ -102,7 +102,7 @@ app.post('/turbo', function (req, res) {
 // Contrôle audio (chaque son est associé à une couleur)
 app.post('/audio', function (req, res) {
 
-    var couleur = req.body.couleur;
+    let couleur = req.body.couleur;
     player.openFile(__dirname + '/public/audio/' + couleur + '.mp3');
 
     res.end();
@@ -111,20 +111,20 @@ app.post('/audio', function (req, res) {
 // Contrôle LEDs
 app.post('/led', function (req, res) {
 
-    var couleur = req.body.couleur;
+    let couleur = req.body.couleur;
     logger.log(couleur);
 
-    var couleurs = {
+    let couleurs = {
         "vert": 21,
         "rouge": 26,
         "jaune": 20
     }; // Les chiffres correspondent aux sorties GPIO (directement sur le RasPi)
 
-    var led = new GPIO(couleurs[couleur], 'out'); // On met en place la LED correspondante
+    let led = new GPIO(couleurs[couleur], 'out'); // On met en place la LED correspondante
 
     // Fait clignoter la LED
-    var ledOn = 0;
-    var intervalHandler = setInterval(
+    let ledOn = 0;
+    let intervalHandler = setInterval(
         function () {
 
             if (ledOn) {
@@ -149,10 +149,10 @@ app.post('/led', function (req, res) {
 
 app.post('/headlights', function (req, res) {
 
-    var headlightsState = parseInt(req.body.headlightsState); // Récupère l'état des phares (0 = éteint, 1 = allumé)
+    let headlightsState = parseInt(req.body.headlightsState); // Récupère l'état des phares (0 = éteint, 1 = allumé)
 
-    var headlights1 = new GPIO(16, 'out'); // phare gauche
-    var headlights2 = new GPIO(19, 'out'); // phare droit
+    let headlights1 = new GPIO(16, 'out'); // phare gauche
+    let headlights2 = new GPIO(19, 'out'); // phare droit
 
     headlights1.writeSync(headlightsState); // Allume ou éteint en fonction...
     headlights2.writeSync(headlightsState); // Allume ou éteint en fonction...
@@ -168,8 +168,8 @@ app.post('/poweroff', function (req, res) {
     serial.write(STOP_MOTORS); // Moteurs off
 
     // Éteint les phares
-    var headlights1 = new GPIO(16, 'out');
-    var headlights2 = new GPIO(19, 'out');
+    let headlights1 = new GPIO(16, 'out');
+    let headlights2 = new GPIO(19, 'out');
     headlights1.writeSync(0);
     headlights2.writeSync(0);
 
@@ -182,7 +182,7 @@ app.post('/poweroff', function (req, res) {
 // Renvoie le mode de connexion réseau (local ou autonome) en fonction de l'adresse IP du serveur
 app.post('/getNetworkMode', function (req, res) {
 
-    var currentNetworkMode = LOCAL_NETWORK_MODE; // Par défaut en local
+    let currentNetworkMode = LOCAL_NETWORK_MODE; // Par défaut en local
 
     // On récupère l'adresse IP du serveur pour vérifier si on est en mode autonome
     if (getServerIp() == AUTONOMOUS_NETWORK_MODE_IP) {
@@ -201,11 +201,11 @@ app.post('/getServerIp', function (req, res) {
 // Renvoie l'adresse IP du serveur
 function getServerIp() {
 
-    var net = os.networkInterfaces();
-    var ipAddresses = [];
-    for (var ifc in net) {
-        var addrs = net[ifc];
-        for (var a in addrs) {
+    let net = os.networkInterfaces();
+    let ipAddresses = [];
+    for (let ifc in net) {
+        let addrs = net[ifc];
+        for (let a in addrs) {
             if (addrs[a].family == "IPv4" && addrs[a].address != "127.0.0.1") {
                 ipAddresses.push(addrs[a].address);
             }
@@ -230,7 +230,7 @@ app.post('/getConfig', function (req, res) {
 
 // Changement du mode réseau
 app.post('/changeNetworkMode', function (req, res) {
-    var newNetworkMode = req.body.networkMode;
+    let newNetworkMode = req.body.networkMode;
 
     switch (newNetworkMode) {
         case AUTONOMOUS_NETWORK_MODE:
@@ -253,7 +253,7 @@ app.post('/changeNetworkMode', function (req, res) {
 // TODO : Check le mot de passe en input
 app.post('/password', function (req, res) {
 
-    var newPassword = req.body.newPassword;
+    let newPassword = req.body.newPassword;
     exec("sed -i '10 d' /etc/hostapd/hostapd.conf", function (error, stdout, stderr) {
     }); // On supprime la ligne 10 qui contient l'ancien mot de passe
     exec("sed -i '10i\wpa_passphrase=" + newPassword + "' /etc/hostapd/hostapd.conf", function (error, stdout, stderr) {
@@ -263,7 +263,7 @@ app.post('/password', function (req, res) {
 });
 
 // Lance l'écoute sur le port défini en constante en début de code
-var server = app.listen(PORT, function () {
+let server = app.listen(PORT, function () {
 });
 
 //############################//
