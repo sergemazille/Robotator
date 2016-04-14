@@ -7,8 +7,8 @@ const GPIO = require('onoff').Gpio; // Contrôle des broches directement sur le 
 const SerialPort = require('serialport').SerialPort; // Communique avec l'Arduberry
 
 const express = require('express'); // Serveur web
-const app = express(); // Assignation du serveur à la variable 'app'
-app.use(express.static(__dirname + '/public')); // Indique où sont les fichiers statiques
+const app = express(); // Assignation du serveur à la constante 'app'
+app.use(express.static(__dirname + '/public')); // Indique où sont situés les fichiers statiques
 app.set('view engine', 'ejs'); // Le moteur de template est 'ejs'
 app.set('views', __dirname + '/public'); // Evite de repréciser le chemin complet des vues lors du rendu
 
