@@ -1,11 +1,14 @@
-@charset "UTF-8";
 /* TODO : Remplacer style boutons changement de mode réseau */
+
 html, body {
   width: 100%;
   height: 100%;
+
   margin: 0;
   padding: 0;
-  font-family: Arial, Verdana, Helvetica, sans-serif; }
+
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+}
 
 /* Boutons choix mode réseau */
 .choiceBtn {
@@ -15,119 +18,156 @@ html, body {
   width: 100%;
   margin: 0.5em 0;
   text-align: start;
-  font-size: 0.9em; }
+  font-size: 0.9em;
+}
 
 label.labelBox:hover {
   cursor: pointer;
-  cursor: hand; }
+  cursor: hand;
+}
 
 label > input {
-  visibility: hidden;
-  /* invisible */
-  position: absolute;
-  /* non clickable */ }
+  visibility: hidden; /* invisible */
+  position: absolute; /* non clickable */
+}
 
-p.choiceBtn > img {
+p.choiceBtn > img{
   float: right;
-  margin-right: 15px; }
+  margin-right: 15px;
+}
 
-input:checked + p.choiceBtn > img {
-  margin-right: 13px;
-  /* compense la bordure de 2px */ }
+input:checked + p.choiceBtn > img{
+  margin-right: 13px; /* compense la bordure de 2px */
+}
 
-label > input:checked + p.choiceBtn {
-  /* style d'un élément 'p' quand le bouton radio est checked */
+label > input:checked + p.choiceBtn { /* style d'un élément 'p' quand le bouton radio est checked */
   background-color: #acc5e0;
   border: 2px solid midnightblue;
-  padding: 3px 0 3px 13px;
-  /* Le texte ne bougera pas lors de l'ajout de la bordure*/ }
-
+  padding: 3px 0 3px 13px; /* Le texte ne bougera pas lors de l'ajout de la bordure*/
+}
 /* FIN Boutons choix mode réseau */
+
 img.power {
-  margin-right: 0.75em; }
+  margin-right: 0.75em;
+}
 
 .modalBox {
-  text-align: center; }
+  text-align: center;
+}
 
 .modalBoxCancelBtn {
   background-color: lightcoral;
-  color: #FFFFFF; }
+  color: #FFFFFF;
+}
 
 #interface {
   display: flex;
   justify-content: space-between;
+
   /*
       // La vidéo d'arrière-plan sera modifiée par javascript en fonction de l'IP du serveur
       background-image: url("http://10.0.0.1/stream/video.mjpeg");
   */
+
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center;
   height: 100%;
-  width: 100%; }
+  width: 100%;
+}
 
 #left-group {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 2em; }
+
+  margin: 2em;
+}
 
 #marche {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+}
 
 #vitesse {
   display: flex;
-  flex-direction: column; }
+  flex-direction: column;
+}
 
 #right-group {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  margin: 2%; }
+
+  margin: 2%;
+}
 
 /* Petits écrans */
 @media screen and (min-width: 380px) {
   img.audio, img.power, img.config {
     width: 50px;
-    height: 50px; }
+    height: 50px;
+  }
+
   img.headlights {
     width: 70px;
-    height: 70px; }
+    height: 70px;
+  }
+
   img.motor {
     width: 90px;
-    height: 90px; }
+    height: 90px;
+  }
+
   img#turbo {
     width: 90px;
-    height: 30px; } }
+    height: 30px;
+  }
+}
 
 /* Ecrans moyens */
 @media screen and (min-width: 768px) {
   img.audio, img.power, img.config {
     width: 70px;
-    height: 70px; }
+    height: 70px;
+  }
+
   img.headlights {
     width: 90px;
-    height: 90px; }
+    height: 90px;
+  }
+
   img.motor {
     width: 150px;
-    height: 150px; }
+    height: 150px;
+  }
+
   img#turbo {
     width: 150px;
-    height: 50px; } }
+    height: 50px;
+  }
+}
 
 /* Ecrans larges */
 @media screen and (min-width: 960px) {
   img.audio, img.power, img.config {
     width: 80px;
-    height: 80px; }
+    height: 80px;
+  }
+
   img.headlights {
     width: 120px;
-    height: 120px; }
+    height: 120px;
+  }
+
   img.motor {
     width: 200px;
-    height: 200px; }
+    height: 200px;
+  }
+
   img#turbo {
     width: 200px;
-    height: 66px; } }
+    height: 66px;
+  }
+}

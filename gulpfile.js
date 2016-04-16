@@ -7,6 +7,7 @@
 const gulp = require('gulp');
 const watch = require('gulp-watch');
 const concat = require('gulp-concat');
+const sass = require('gulp-sass');
 const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
@@ -29,7 +30,14 @@ gulp.task('AppWeb_resources', function () {
 });
 
 // Minifie et copie les fichiers de style (css)
-gulp.task('AppWeb_css', ['AppWeb_resources'], function () {
+gulp.task('AppWeb_sass', ['AppWeb_resources'], function () {
+    return gulp.src('dev/sass/**/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('dev/css'));
+});
+
+// Minifie et copie les fichiers de style (css)
+gulp.task('AppWeb_css', ['AppWeb_sass'], function () {
     return gulp.src('dev/css/**/*')
         .pipe(cleanCSS())
         .pipe(concat('style.css'))
@@ -372,6 +380,7 @@ gulp.task('AppMobileTests_injectScripts', ['AppMobileTests_index'], function () 
 
 gulp.task('AppWeb', [
     'AppWeb_resources',
+    'AppWeb_sass',
     'AppWeb_css',
     'AppWeb_scripts',
     'AppWeb_index',
