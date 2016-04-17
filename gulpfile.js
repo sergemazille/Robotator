@@ -29,7 +29,7 @@ gulp.task('AppWeb_resources', function () {
         .pipe(gulp.dest('AppWeb/public'))
 });
 
-// Minifie et copie les fichiers de style (css)
+// Transforme les fichiers de style sass en css
 gulp.task('AppWeb_sass', ['AppWeb_resources'], function () {
     return gulp.src('dev/sass/**/*.scss')
         .pipe(sass())
@@ -121,8 +121,15 @@ gulp.task('AppMobile_icons', ['AppMobile_resources'], function () {
         .pipe(gulp.dest('AppMobile/resources/android'))
 });
 
+// Transforme les fichiers de style sass en css
+gulp.task('AppMobile_sass', ['AppMobile_icons'], function () {
+    return gulp.src('dev/sass/**/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('dev/css'));
+});
+
 // Minifie et copie les fichiers de style (css)
-gulp.task('AppMobile_css', ['AppMobile_icons'], function () {
+gulp.task('AppMobile_css', ['AppMobile_sass'], function () {
     return gulp.src('dev/css/**/*')
         .pipe(cleanCSS())
         .pipe(concat('style.css'))
